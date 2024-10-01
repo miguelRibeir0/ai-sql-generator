@@ -1,0 +1,26 @@
+import { CornerDownLeft } from "lucide-react";
+
+import { Button } from "@/Components/ui/button";
+import { Label } from "@/Components/ui/label";
+import { Textarea } from "@/Components/ui/textarea";
+
+export default function SqlGenerator() {
+	return (
+		<form className="relative overflow-hidden rounded-lg border bg-background min-w-96 focus-within:ring-1 focus-within:ring-ring">
+			<Label htmlFor="message" className="sr-only">
+				Message
+			</Label>
+			<Textarea
+				id="message"
+				placeholder="Type your message here..."
+				className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0"
+			/>
+			<div className="flex items-center p-3 mt-3">
+				<Button type="submit" size="sm" className="ml-auto gap-1.5">
+					Generate Code
+					<CornerDownLeft className="size-3.5" />
+				</Button>
+			</div>
+		</form>
+	);
+}
