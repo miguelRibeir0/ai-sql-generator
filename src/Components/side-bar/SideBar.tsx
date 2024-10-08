@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import {
 	Bot,
 	LifeBuoy,
@@ -28,14 +30,16 @@ export function SideBar() {
 					<nav className="grid gap-1 p-2">
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Button
-									variant="ghost"
-									size="icon"
-									className="rounded-lg bg-muted"
-									aria-label="Playground"
-								>
-									<SquareTerminal className="size-5" />
-								</Button>
+								<Link to={"/"}>
+									<Button
+										variant="ghost"
+										size="icon"
+										className="rounded-lg bg-muted"
+										aria-label="Playground"
+									>
+										<SquareTerminal className="size-5" />
+									</Button>
+								</Link>
 							</TooltipTrigger>
 							<TooltipContent side="right" sideOffset={5}>
 								SQL Generator
@@ -58,14 +62,16 @@ export function SideBar() {
 						</Tooltip>
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Button
-									variant="ghost"
-									size="icon"
-									className="rounded-lg"
-									aria-label="API"
-								>
-									<Database className="size-5" />
-								</Button>
+								<Link to={"/database"}>
+									<Button
+										variant="ghost"
+										size="icon"
+										className="rounded-lg"
+										aria-label="API"
+									>
+										<Database className="size-5" />
+									</Button>
+								</Link>
 							</TooltipTrigger>
 							<TooltipContent side="right" sideOffset={5}>
 								Database

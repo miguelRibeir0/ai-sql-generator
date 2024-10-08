@@ -1,6 +1,7 @@
-import { SideBar } from "./Components/side-bar/SideBar";
-import SqlGenerator from "./Components/sql-generator/SqlGenerator";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import SqlGenerator from "./Components/sql-generator/SqlGenerator";
+import { DatabaseLanding } from "./Components/database/Database";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -10,16 +11,30 @@ const queryClient = new QueryClient({
 	},
 });
 
+const router = createBrowserRouter([
+	{
+		path: "/",
+		element: (
+			<>
+				<SqlGenerator />
+			</>
+		),
+	},
+	{
+		path: "/database",
+		element: (
+			<>
+				<DatabaseLanding />
+			</>
+		),
+	},
+]);
+
 function App() {
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>
-				<div className="flex">
-					<SideBar />
-					<div className="h-screen flex items-center justify-center w-full">
-						<SqlGenerator />
-					</div>
-				</div>
+				<RouterProvider router={router} />
 			</QueryClientProvider>
 		</>
 	);

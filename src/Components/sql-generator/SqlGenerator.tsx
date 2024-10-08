@@ -2,6 +2,7 @@ import { useState } from "react";
 import Output from "./Output";
 import Loading from "./Loading";
 import { groqRequest } from "./groqRequest";
+import { SideBar } from "../side-bar/SideBar";
 
 import { CornerDownLeft } from "lucide-react";
 
@@ -42,42 +43,45 @@ export default function SqlGenerator() {
 	};
 
 	return (
-		<>
-			<div className="relative flex flex-col items-center justify-center min-h-screen">
-				<form
-					className="relative overflow-hidden rounded-lg border bg-background min-w-72 lg:min-w-96 "
-					onSubmit={(e) => {
-						e.preventDefault();
-						handleSubmit(e);
-					}}
-				>
-					<Label htmlFor="prompt" className="sr-only">
-						prompt
-					</Label>
-					<Textarea
-						id="prompt"
-						placeholder="Type your prompt here..."
-						value={prompt}
-						onChange={(e) => setPrompt(e.target.value)}
-						className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0"
-					/>
-					<div className="flex items-center p-3 mt-3">
-						<Button
-							type="submit"
-							size="sm"
-							className="lg:ml-auto lg:mr-0 w-[80%] m-auto lg:w-fit gap-1.5"
-						>
-							Generate Code
-							<CornerDownLeft className="size-3.5" />
-						</Button>
-					</div>
-				</form>
-				{state && isLoading ? (
-					<Loading />
-				) : state && !isLoading ? (
-					<Output sql={sql} />
-				) : null}
+		<div className="flex">
+			<SideBar />
+			<div className="h-screen flex items-center justify-center w-full">
+				<div className="relative flex flex-col items-center justify-center min-h-screen">
+					<form
+						className="relative overflow-hidden rounded-lg border bg-background min-w-72 lg:min-w-96 "
+						onSubmit={(e) => {
+							e.preventDefault();
+							handleSubmit(e);
+						}}
+					>
+						<Label htmlFor="prompt" className="sr-only">
+							prompt
+						</Label>
+						<Textarea
+							id="prompt"
+							placeholder="Type your prompt here..."
+							value={prompt}
+							onChange={(e) => setPrompt(e.target.value)}
+							className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0"
+						/>
+						<div className="flex items-center p-3 mt-3">
+							<Button
+								type="submit"
+								size="sm"
+								className="lg:ml-auto lg:mr-0 w-[80%] m-auto lg:w-fit gap-1.5"
+							>
+								Generate Code
+								<CornerDownLeft className="size-3.5" />
+							</Button>
+						</div>
+					</form>
+					{state && isLoading ? (
+						<Loading />
+					) : state && !isLoading ? (
+						<Output sql={sql} />
+					) : null}
+				</div>
 			</div>
-		</>
+		</div>
 	);
 }
