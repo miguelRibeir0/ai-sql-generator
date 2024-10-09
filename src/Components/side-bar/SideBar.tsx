@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import {
 	Bot,
@@ -18,6 +18,9 @@ import {
 } from "@/Components/ui/tooltip";
 
 export function SideBar() {
+	const location = useLocation();
+	console.log(location.pathname);
+
 	return (
 		<TooltipProvider delayDuration={300}>
 			<div className="grid h-screen pl-[56px]">
@@ -34,8 +37,12 @@ export function SideBar() {
 									<Button
 										variant="ghost"
 										size="icon"
-										className="rounded-lg bg-muted"
-										aria-label="Playground"
+										className={
+											location.pathname == "/"
+												? "rounded-lg bg-muted"
+												: "rounded-lg"
+										}
+										aria-label="SQL Generator"
 									>
 										<SquareTerminal className="size-5" />
 									</Button>
@@ -50,7 +57,11 @@ export function SideBar() {
 								<Button
 									variant="ghost"
 									size="icon"
-									className="rounded-lg"
+									className={
+										location.pathname == "/models"
+											? "rounded-lg bg-muted"
+											: "rounded-lg"
+									}
 									aria-label="Models"
 								>
 									<Bot className="size-5" />
@@ -66,8 +77,12 @@ export function SideBar() {
 									<Button
 										variant="ghost"
 										size="icon"
-										className="rounded-lg"
-										aria-label="API"
+										className={
+											location.pathname == "/database"
+												? "rounded-lg bg-muted"
+												: "rounded-lg"
+										}
+										aria-label="Database"
 									>
 										<Database className="size-5" />
 									</Button>
@@ -82,7 +97,11 @@ export function SideBar() {
 								<Button
 									variant="ghost"
 									size="icon"
-									className="rounded-lg"
+									className={
+										location.pathname == "/settings"
+											? "rounded-lg bg-muted"
+											: "rounded-lg"
+									}
 									aria-label="Settings"
 								>
 									<Settings2 className="size-5" />
@@ -99,7 +118,11 @@ export function SideBar() {
 								<Button
 									variant="ghost"
 									size="icon"
-									className="mt-auto rounded-lg"
+									className={
+										location.pathname == "/help"
+											? "rounded-lg bg-muted mt-auto"
+											: "rounded-lg mt-auto"
+									}
 									aria-label="Help"
 								>
 									<LifeBuoy className="size-5" />
