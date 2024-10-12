@@ -19,7 +19,6 @@ import {
 
 export function SideBar() {
 	const location = useLocation();
-	console.log(location.pathname);
 
 	return (
 		<TooltipProvider delayDuration={300}>
@@ -54,18 +53,20 @@ export function SideBar() {
 						</Tooltip>
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Button
-									variant="ghost"
-									size="icon"
-									className={
-										location.pathname == "/models"
-											? "rounded-lg bg-muted"
-											: "rounded-lg"
-									}
-									aria-label="Models"
-								>
-									<Bot className="size-5" />
-								</Button>
+								<Link to={"/models"}>
+									<Button
+										variant="ghost"
+										size="icon"
+										className={
+											location.pathname == "/models"
+												? "rounded-lg bg-muted"
+												: "rounded-lg"
+										}
+										aria-label="Models"
+									>
+										<Bot className="size-5" />
+									</Button>
+								</Link>
 							</TooltipTrigger>
 							<TooltipContent side="right" sideOffset={5}>
 								Models
@@ -94,18 +95,20 @@ export function SideBar() {
 						</Tooltip>
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Button
-									variant="ghost"
-									size="icon"
-									className={
-										location.pathname == "/settings"
-											? "rounded-lg bg-muted"
-											: "rounded-lg"
-									}
-									aria-label="Settings"
-								>
-									<Settings2 className="size-5" />
-								</Button>
+								<Link to={"/settings"}>
+									<Button
+										variant="ghost"
+										size="icon"
+										className={
+											location.pathname == "/settings"
+												? "rounded-lg bg-muted"
+												: "rounded-lg"
+										}
+										aria-label="Settings"
+									>
+										<Settings2 className="size-5" />
+									</Button>
+								</Link>
 							</TooltipTrigger>
 							<TooltipContent side="right" sideOffset={5}>
 								Settings
@@ -115,18 +118,20 @@ export function SideBar() {
 					<nav className="mt-auto grid gap-1 p-2">
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Button
-									variant="ghost"
-									size="icon"
-									className={
-										location.pathname == "/help"
-											? "rounded-lg bg-muted mt-auto"
-											: "rounded-lg mt-auto"
-									}
-									aria-label="Help"
-								>
-									<LifeBuoy className="size-5" />
-								</Button>
+								<Link to={"/help"}>
+									<Button
+										variant="ghost"
+										size="icon"
+										className={
+											location.pathname == "/help"
+												? "rounded-lg bg-muted mt-auto"
+												: "rounded-lg mt-auto"
+										}
+										aria-label="Help"
+									>
+										<LifeBuoy className="size-5" />
+									</Button>
+								</Link>
 							</TooltipTrigger>
 							<TooltipContent side="right" sideOffset={5}>
 								Help

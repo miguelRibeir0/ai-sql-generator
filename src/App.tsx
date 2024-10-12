@@ -2,6 +2,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SqlGenerator from "./Components/sql-generator/SqlGenerator";
 import { DatabaseLanding } from "./Components/database/Database";
+import Models from "./Components/models/Models";
+import Settings from "./Components/settings/Settings";
+import Help from "./Components/help/Help";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -10,6 +13,10 @@ const queryClient = new QueryClient({
 		},
 	},
 });
+
+if (!localStorage.getItem("modelSelected")) {
+	localStorage.setItem("modelSelected", "llama3-8b-8192");
+}
 
 const router = createBrowserRouter([
 	{
@@ -25,6 +32,30 @@ const router = createBrowserRouter([
 		element: (
 			<>
 				<DatabaseLanding />
+			</>
+		),
+	},
+	{
+		path: "/models",
+		element: (
+			<>
+				<Models />
+			</>
+		),
+	},
+	{
+		path: "/settings",
+		element: (
+			<>
+				<Settings />
+			</>
+		),
+	},
+	{
+		path: "/help",
+		element: (
+			<>
+				<Help />
 			</>
 		),
 	},

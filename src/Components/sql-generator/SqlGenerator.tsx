@@ -25,8 +25,9 @@ export default function SqlGenerator() {
 	const [sql, setSql] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
-	const model = "llama3-8b-8192";
+	const model = localStorage.getItem("modelSelected") || "llama3-8b-8192";
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -50,12 +51,16 @@ export default function SqlGenerator() {
 		}
 	};
 
+	const handleTooltipToggle = () => {
+		setIsTooltipVisible(!isTooltipVisible);
+	};
+
 	return (
 		<div className="flex">
 			<SideBar />
 			<div className="h-screen flex items-center justify-center w-full">
 				<div className="relative flex flex-col items-center justify-center min-h-screen">
-					<div className="absolute top-[38%] flex justify-between items-center w-full">
+					<div className="absolute top-[35%] md:top-[38%] flex justify-between items-center w-full">
 						<Link to={"/database"}>
 							<Button size="sm" className="flex gap-x-2" variant="outline">
 								<Database size="16px" />
@@ -63,13 +68,23 @@ export default function SqlGenerator() {
 							</Button>
 						</Link>
 						<TooltipProvider delayDuration={300}>
-							<Tooltip>
+							<Tooltip
+								open={isTooltipVisible}
+								onOpenChange={setIsTooltipVisible}
+							>
 								<TooltipTrigger asChild>
-									<div className="cursor-pointer opacity-30 hover:opacity-100 transition ease-in-out duration-300">
+									<div
+										className="cursor-pointer opacity-30 hover:opacity-100 transition ease-in-out duration-300"
+										onClick={handleTooltipToggle}
+									>
 										<CircleHelp size="18px" />
 									</div>
 								</TooltipTrigger>
-								<TooltipContent side="top" sideOffset={5}>
+								<TooltipContent
+									side="top"
+									sideOffset={5}
+									className="md:w-full w-[70%] ml-6 mb-3 md:ml-0 md:mb-0"
+								>
 									<div className="text-sm">
 										<p>
 											Use Human language to generate an SQL query to our default
@@ -111,7 +126,9 @@ export default function SqlGenerator() {
 						</div>
 					</form>
 					{error && (
-						<div className="text-red-400 absolute top-[58%]">{error}</div>
+						<div className="text-red-400 absolute top-[61%] md:top-[58%]">
+							{error}
+						</div>
 					)}{" "}
 					{state && isLoading ? (
 						<Loading />
