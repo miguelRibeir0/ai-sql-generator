@@ -125,8 +125,11 @@ export default function SqlGenerator() {
 							</Button>
 						</div>
 					</form>
+					<p className="self-start opacity-50 absolute top-[61%] md:top-[58%]  text-sm">
+						Current model: {model}
+					</p>
 					{error && (
-						<div className="text-red-400 absolute top-[61%] md:top-[58%]">
+						<div className="text-red-400 absolute top-[66%] md:top-[63%]">
 							{error}
 						</div>
 					)}{" "}

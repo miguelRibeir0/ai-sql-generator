@@ -28,7 +28,7 @@ export default function Output({ sql }: { sql: string }) {
 			<Tooltip>
 				<TooltipTrigger asChild>
 					<section
-						className="absolute top-[58%] mt-4 overflow-hidden rounded-lg border bg-background w-fit focus-within:ring-1 focus-within:ring-ring hover:bg-white hover:bg-opacity-5 transition ease-in-out duration-150 cursor-pointer"
+						className="absolute top-[63%] mt-4 overflow-hidden rounded-lg border bg-background w-fit focus-within:ring-1 focus-within:ring-ring hover:bg-white hover:bg-opacity-5 transition ease-in-out duration-150 cursor-pointer"
 						onClick={() => {
 							toast({
 								description: (
