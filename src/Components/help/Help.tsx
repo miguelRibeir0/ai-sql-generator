@@ -20,6 +20,10 @@ export default function Help() {
 						<li>● Two Tables: Kitchen Products and Room products.</li>
 						<li>● Each table has 3 columns: Name, Quantity and Date added.</li>
 					</ul>
+					<p className="mt-3">
+						After getting your SQL code go over to the DB section to query our
+						database.
+					</p>
 				</div>
 				<h2 className="uppercase font-bold text-3xl mt-10 mb-5">
 					How do I connect it to my own DB:
@@ -36,10 +40,6 @@ export default function Help() {
 					<ul>
 						<li>
 							● You will be able to see your database on the database section.
-						</li>
-						<li>
-							● After you submit your prompt the desired output will appear
-							bellow it.
 						</li>
 					</ul>
 				</div>

@@ -72,14 +72,16 @@ export default function SqlGenerator() {
 								open={isTooltipVisible}
 								onOpenChange={setIsTooltipVisible}
 							>
-								<TooltipTrigger asChild>
-									<div
-										className="cursor-pointer opacity-30 hover:opacity-100 transition ease-in-out duration-300"
-										onClick={handleTooltipToggle}
-									>
-										<CircleHelp size="18px" />
-									</div>
-								</TooltipTrigger>
+								<a href="/help">
+									<TooltipTrigger asChild>
+										<div
+											className="cursor-pointer opacity-30 hover:opacity-100 transition ease-in-out duration-300"
+											onClick={handleTooltipToggle}
+										>
+											<CircleHelp size="18px" />
+										</div>
+									</TooltipTrigger>
+								</a>
 								<TooltipContent
 									side="top"
 									sideOffset={5}
@@ -91,8 +93,8 @@ export default function SqlGenerator() {
 											Database.{" "}
 										</p>
 										<p>
-											For more info go to the help section at the bottom of the
-											sidebar.
+											Click on the ? icon or go to the help section at the
+											bottom of the sidebar for more info.
 										</p>
 									</div>
 								</TooltipContent>

@@ -29,3 +29,19 @@ export const roomFetch = async () => {
 		console.error(error);
 	}
 };
+
+export const customFetch = async (query: string) => {
+	try {
+		const ans = await fetch(`${server}/ai-sql-gen/custom-query`, {
+			method: "POST",
+			headers: {
+				"content-type": "application/json",
+			},
+			body: JSON.stringify({ query }),
+		});
+		const data = await ans.json();
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
+};
