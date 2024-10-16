@@ -4,7 +4,7 @@ export default function Help() {
 	return (
 		<div className="flex">
 			<SideBar />
-			<div className="h-screen flex flex-col items-center justify-center w-full m-10 md:m-0">
+			<div className="min-h-screen flex flex-col items-center justify-center w-full m-10 mt-20 mb-20 md:m-0">
 				<h2 className="uppercase font-bold text-3xl mb-5">How it works:</h2>
 				<div className="md:w-[600px]">
 					<p>
@@ -29,15 +29,19 @@ export default function Help() {
 					How do I connect it to my own DB:
 				</h2>
 				<div className="md:w-[600px]">
-					<p>
+					<p className="mt-3 mb-3">[Under Development]:</p>
+					<p className="mb-3">
 						Go over to{" "}
 						<a href="/settings" className="underline">
 							settings
 						</a>
 						, and fill in the form with your database credentials.
 					</p>
-					<p className="mt-3 mb-3">[Under Development]:</p>
+
 					<ul>
+						<li>
+							● You will be able to connect your own DB. (postgreSQL only)
+						</li>
 						<li>
 							● You will be able to see your database on the database section.
 						</li>

@@ -35,6 +35,13 @@ export function DatabaseLanding() {
 		setFlag(true);
 	}, []);
 
+	const handleInputChange = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			setQuery(e.target.value);
+		},
+		[],
+	);
+
 	const customTable = useMemo(
 		() => <CustomTable customQuery={custom} />,
 		[custom],
@@ -58,7 +65,7 @@ export function DatabaseLanding() {
 	return (
 		<div className="flex">
 			<SideBar />
-			<div className="h-screen flex flex-col gap-y-20 items-center justify-normal w-full">
+			<div className="min-h-screen flex flex-col gap-y-20 items-center justify-normal w-full mb-20">
 				<div className="w-[90%] md:w-[70%] mt-10 md:mt-40">
 					<form className="flex items-center gap-x-7" onSubmit={handleSubmit}>
 						<input
@@ -66,7 +73,7 @@ export function DatabaseLanding() {
 							className="rounded-lg border bg-card text-card-foreground shadow w-full h-14 p-3"
 							placeholder="Place your SQL query here..."
 							value={query}
-							onChange={(e) => setQuery(e.target.value)}
+							onChange={handleInputChange}
 						/>
 						<Button type="submit" className="w-20 h-full p-3 border">
 							<PackageSearch />
