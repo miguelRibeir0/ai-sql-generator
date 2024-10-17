@@ -16,7 +16,7 @@ export default function Models() {
 	return (
 		<div className="flex">
 			<SideBar />
-			<div className="h-screen flex items-center justify-center flex-wrap w-full">
+			<div className="min-h-screen flex items-center mb-10 justify-center flex-wrap w-full">
 				<div className="lg:w-[20%] w-[80%] mt-10 flex items-center justify-center">
 					<ModelCard
 						model="llama3-8b-8192"

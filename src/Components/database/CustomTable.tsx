@@ -81,7 +81,7 @@ export function CustomTable({ customQuery }: CustomCardProps) {
 				</CardContent>
 			</Card>
 			<a href="/database">
-				<Button className="w-40 h-14">Reset</Button>
+				<Button className="w-28 h-10">Reset</Button>
 			</a>
 		</>
 	);
