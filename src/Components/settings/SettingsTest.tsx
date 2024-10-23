@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { SideBar } from "../side-bar/SideBar";
 
@@ -10,6 +10,9 @@ import { dbCheck } from "./dbcheck";
 
 export default function SettingsTest() {
 	const [flag, setFlag] = useState(false);
+	const [activeDb, setActiveDb] = useState(false);
+	const [error, setError] = useState(false);
+	const [errorText, setErrorText] = useState("");
 	const [user, setUser] = useState("");
 	const [host, setHost] = useState("");
 	const [dbName, setDbName] = useState("");
@@ -21,20 +24,16 @@ export default function SettingsTest() {
 		setFlag(!flag);
 	};
 
-	const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+	const dbConfig = {
+		user,
+		host,
+		dbName,
+		password,
+		port,
+		table,
+	};
 
-		const dbConfig = {
-			user,
-			host,
-			dbName,
-			password,
-			port,
-			table,
-		};
-
-		localStorage.setItem("dbConfig", JSON.stringify(dbConfig));
-
+	const dbConnection = async () => {
 		const check = await dbCheck({
 			user,
 			host,
@@ -44,15 +43,66 @@ export default function SettingsTest() {
 			table,
 		});
 
-		console.log(check);
+		return check;
 	};
+
+	const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		localStorage.setItem("dbConfig", JSON.stringify(dbConfig));
+
+		const check = await dbConnection();
+
+		if (check.error) {
+			setActiveDb(false);
+			setError(true);
+			setErrorText(check.error);
+		} else setActiveDb(true);
+	};
+
+	useEffect(() => {
+		const contentUpdate = async () => {
+			const storedConfig = localStorage.getItem("dbConfig");
+			if (storedConfig) {
+				const config = JSON.parse(storedConfig);
+				setUser(config.user);
+				setHost(config.host);
+				setDbName(config.dbName);
+				setPassword(config.password);
+				setPort(config.port);
+				setTable(config.table);
+
+				setFlag(true);
+
+				// Waiting for state updates to complete
+				await new Promise((resolve) => setTimeout(resolve, 0));
+
+				const check = await dbCheck({
+					user: config.user,
+					host: config.host,
+					database: config.dbName,
+					password: config.password,
+					port: config.port,
+					table: config.table,
+				});
+
+				if (check.error) {
+					setActiveDb(false);
+					setError(true);
+					setErrorText(check.error);
+				} else setActiveDb(true);
+			}
+		};
+
+		contentUpdate();
+	}, []);
 	return (
 		<div className="flex">
 			<SideBar />
 			<div className="h-screen flex items-center justify-center w-full p-5">
 				<div>
 					<h3 className="text-2xl font-bold mb-5">Connect to your DB</h3>
-					<Switch className="mb-5" onClick={switchState} />
+					<Switch className="mb-5" onClick={switchState} checked={flag} />
 					<form
 						className="w-full flex flex-col gap-y-5"
 						onSubmit={submitHandler}
@@ -106,7 +156,7 @@ export default function SettingsTest() {
 							<div className="w-full">
 								<Label htmlFor="user">Password:</Label>
 								<input
-									type="text"
+									type="password"
 									name="Password"
 									value={password}
 									onChange={(e) => setPassword(e.target.value)}
@@ -153,6 +203,15 @@ export default function SettingsTest() {
 							</Button>
 						</div>
 					</form>
+					{activeDb ? (
+						<p className="mt-5 text-green-400">DB connected!</p>
+					) : error ? (
+						<>
+							<p className="mt-5 text-red-400">Db fetch returned an error!</p>
+							<p className="mt-2 text-red-400">{errorText}</p>
+						</>
+					) : null}
+					<p></p>
 					<img
 						src="https://personal-static-files-cdn.fra1.cdn.digitaloceanspaces.com/Portfolio/SVGS/PostgresSQL.svg"
 						alt="PostgresSql Icon"
