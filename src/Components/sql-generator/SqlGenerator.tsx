@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Output from "./Output";
 import Loading from "./Loading";
@@ -22,7 +22,6 @@ import {
 export default function SqlGenerator() {
 	const [prompt, setPrompt] = useState("");
 	const [state, setState] = useState(false);
-	const [custom, setCustom] = useState(false);
 	const [sql, setSql] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -30,6 +29,8 @@ export default function SqlGenerator() {
 
 	const model = localStorage.getItem("modelSelected") || "llama3-8b-8192";
 	const dbconfig = localStorage.getItem("dbConfig");
+
+	const custom = false; // Testing
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -56,13 +57,6 @@ export default function SqlGenerator() {
 	const handleTooltipToggle = () => {
 		setIsTooltipVisible(!isTooltipVisible);
 	};
-
-	// useEffect(() => {
-	// 	// Flag for system prompt management
-	// 	if (dbconfig) {
-	// 		setCustom(true);
-	// 	}
-	// }, [dbconfig]);
 
 	return (
 		<div className="flex">
