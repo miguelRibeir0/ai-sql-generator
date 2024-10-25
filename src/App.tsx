@@ -5,7 +5,6 @@ import { DatabaseLanding } from "./Components/database/Database";
 import Models from "./Components/models/Models";
 import Settings from "./Components/settings/Settings";
 import Help from "./Components/help/Help";
-import SettingsTest from "./Components/settings/SettingsTest";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -57,14 +56,6 @@ const router = createBrowserRouter([
 		element: (
 			<>
 				<Help />
-			</>
-		),
-	},
-	{
-		path: "/settings/test",
-		element: (
-			<>
-				<SettingsTest />
 			</>
 		),
 	},

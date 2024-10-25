@@ -37,13 +37,19 @@ export default function Help() {
 						</a>
 						, and fill in the form with your database credentials.
 					</p>
+					<p className="mb-3">
+						You will then be able to see your DB on the database section
+						(postgreSQL only).
+					</p>
 
 					<ul>
-						<li>
-							● You will be able to connect your own DB. (postgreSQL only)
+						<li className="mb-2">
+							● For now you will need to have tables with the same structure as
+							our default one (name, quantity, date_added) and you can only
+							view/query a singular table.
 						</li>
 						<li>
-							● You will be able to see your database on the database section.
+							● Querying your own DB is in the process of being implemented.
 						</li>
 					</ul>
 				</div>

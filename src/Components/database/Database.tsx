@@ -1,7 +1,13 @@
 import { SideBar } from "../side-bar/SideBar";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { kitchenFetch, roomFetch, customFetch } from "./dbfetch";
+import {
+	kitchenFetch,
+	roomFetch,
+	customQueryFetch,
+	customDbFetch,
+	DBSettingProps,
+} from "./dbfetch";
 import { LoadingDB } from "./Loading";
 import { LoadingDB2 } from "./LoadingCustom";
 import { Button } from "../ui/button";
@@ -11,7 +17,18 @@ import { RoomsStockCard } from "./RoomTable";
 import { CustomTable } from "./CustomTable";
 
 export function DatabaseLanding() {
+	// Flag to enable custom query
 	const [flag, setFlag] = useState(false);
+	// Flag to check if custom db is enabled
+	const [customFlag, setCustomFlag] = useState(false);
+	const [dbConfig, setDbConfig] = useState<DBSettingProps>({
+		user: "",
+		host: "",
+		database: "",
+		password: "",
+		port: "",
+		table: "",
+	});
 	const [query, setQuery] = useState("");
 
 	const { data: kitchen, isLoading: isKitchenLoading } = useQuery({
@@ -26,9 +43,25 @@ export function DatabaseLanding() {
 
 	const { data: custom, isLoading: isCustomLoading } = useQuery({
 		queryKey: ["custom", query],
-		queryFn: ({ queryKey }) => customFetch(queryKey[1]),
+		queryFn: ({ queryKey }) => customQueryFetch(queryKey[1]),
 		enabled: flag,
 	});
+
+	const { data: customDB, isLoading: isCustomDBLoading } = useQuery({
+		queryKey: ["customDB", dbConfig],
+		queryFn: ({ queryKey }) => customDbFetch(queryKey[1] as DBSettingProps),
+		enabled: customFlag,
+	});
+
+	// Checking if there is a stored config
+	useEffect(() => {
+		const storedConfig = localStorage.getItem("dbConfig");
+		if (storedConfig) {
+			const config = JSON.parse(storedConfig);
+			setDbConfig(config);
+			setCustomFlag(true);
+		}
+	}, []);
 
 	const handleSubmit = useCallback((e: React.FormEvent) => {
 		e.preventDefault();
@@ -43,8 +76,8 @@ export function DatabaseLanding() {
 	);
 
 	const customTable = useMemo(
-		() => <CustomTable customQuery={custom} />,
-		[custom],
+		() => <CustomTable customQuery={customFlag ? customDB : custom} />,
+		[custom, customDB, customFlag],
 	);
 	const kitchenStockCard = useMemo(
 		() => <KitchenStockCard kitchenQuery={kitchen} />,
@@ -58,7 +91,7 @@ export function DatabaseLanding() {
 	if (isKitchenLoading || isRoomsLoading) {
 		return <LoadingDB />;
 	}
-	if (isCustomLoading) {
+	if (isCustomLoading || isCustomDBLoading) {
 		return <LoadingDB2 />;
 	}
 
@@ -80,7 +113,7 @@ export function DatabaseLanding() {
 						</Button>
 					</form>
 				</div>
-				{flag ? (
+				{flag || customFlag ? (
 					customTable
 				) : (
 					<>

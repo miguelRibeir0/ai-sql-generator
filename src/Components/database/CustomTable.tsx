@@ -27,16 +27,19 @@ interface CustomCardProps {
 	customQuery: Products[];
 }
 
+const dbconfig = localStorage.getItem("dbConfig");
+
 export function CustomTable({ customQuery }: CustomCardProps) {
 	if (!customQuery || !Array.isArray(customQuery)) {
 		return <div>No data available</div>;
 	}
+
 	return (
 		<>
 			<Card className="w-[90%] md:w-[70%]">
 				<CardHeader>
 					<CardTitle className="flex items-center gap-x-3">
-						<Database /> Custom Table
+						<Database /> {dbconfig ? "This is your DB" : "Custom Table"}
 					</CardTitle>
 					<CardDescription>
 						Your requested products will appear bellow.
@@ -57,8 +60,10 @@ export function CustomTable({ customQuery }: CustomCardProps) {
 						<TableBody>
 							{customQuery.map((item: Products, index: number) => (
 								<TableRow key={index}>
-									<TableCell className="font-medium py-3 md:w-[500px]">
-										{item.name}
+									<TableCell
+										className={`font-medium py-3 md:w-[500px] ${item.name ? "" : "text-opacity-50"}`}
+									>
+										{item.name ? item.name : "Unknown"}
 									</TableCell>
 									<TableCell className="hidden md:table-cell py-3">
 										<Badge
@@ -68,11 +73,15 @@ export function CustomTable({ customQuery }: CustomCardProps) {
 											{item.quantity >= 10 ? "Ok" : "Low"}
 										</Badge>
 									</TableCell>
-									<TableCell className="text-center md:text-left py-3">
-										{item.quantity}
+									<TableCell
+										className={`text-center md:text-left py-3 ${item.quantity ? "" : "text-opacity-50"}`}
+									>
+										{item.quantity ? item.quantity : "Unknown"}
 									</TableCell>
-									<TableCell className="hidden md:table-cell w-40 py-3">
-										{item.date_added}
+									<TableCell
+										className={`hidden md:table-cell w-40 py-3 ${item.date_added ? "" : "text-muted-foreground"}`}
+									>
+										{item.date_added ? item.date_added : "Unknown"}
 									</TableCell>
 								</TableRow>
 							))}

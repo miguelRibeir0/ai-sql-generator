@@ -30,7 +30,7 @@ export const roomFetch = async () => {
 	}
 };
 
-export const customFetch = async (query: string) => {
+export const customQueryFetch = async (query: string) => {
 	try {
 		const ans = await fetch(`${server}/ai-sql-gen/custom-query`, {
 			method: "POST",
@@ -44,4 +44,44 @@ export const customFetch = async (query: string) => {
 	} catch (error) {
 		console.error(error);
 	}
+};
+
+export interface DBSettingProps {
+	user: string;
+	host: string;
+	database: string;
+	password: string;
+	port: string;
+	table: string;
+}
+
+export const customDbFetch = async ({
+	user,
+	host,
+	database,
+	password,
+	port,
+	table,
+}: DBSettingProps) => {
+	const queryParams = new URLSearchParams({
+		user,
+		host,
+		database,
+		password,
+		port: port.toString(),
+		table,
+	});
+
+	const ans = await fetch(
+		`${server}/ai-sql-gen/custom-db?${queryParams.toString()}`,
+		{
+			method: "GET",
+			headers: {
+				"content-type": "application/json",
+			},
+		},
+	);
+	const data = await ans.json();
+
+	return data;
 };

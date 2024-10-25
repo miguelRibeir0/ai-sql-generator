@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Output from "./Output";
 import Loading from "./Loading";
@@ -22,12 +22,14 @@ import {
 export default function SqlGenerator() {
 	const [prompt, setPrompt] = useState("");
 	const [state, setState] = useState(false);
+	const [custom, setCustom] = useState(false);
 	const [sql, setSql] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
 	const model = localStorage.getItem("modelSelected") || "llama3-8b-8192";
+	const dbconfig = localStorage.getItem("dbConfig");
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -42,7 +44,7 @@ export default function SqlGenerator() {
 		setState(true);
 
 		try {
-			const response = await groqRequest({ prompt, model });
+			const response = await groqRequest({ prompt, model, custom });
 			setSql(response.completion);
 		} catch (error) {
 			console.error("Error fetching SQL:", error);
@@ -55,6 +57,13 @@ export default function SqlGenerator() {
 		setIsTooltipVisible(!isTooltipVisible);
 	};
 
+	// useEffect(() => {
+	// 	// Flag for system prompt management
+	// 	if (dbconfig) {
+	// 		setCustom(true);
+	// 	}
+	// }, [dbconfig]);
+
 	return (
 		<div className="flex">
 			<SideBar />
@@ -64,7 +73,7 @@ export default function SqlGenerator() {
 						<Link to={"/database"}>
 							<Button size="sm" className="flex gap-x-2" variant="outline">
 								<Database size="16px" />
-								Check our default DB
+								{dbconfig ? "Check your DB" : "Check our default DB"}
 							</Button>
 						</Link>
 						<TooltipProvider delayDuration={300}>
