@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Database } from "lucide-react";
 import { Badge } from "@/Components/ui/badge";
 import { Button } from "../ui/button";
@@ -27,22 +28,31 @@ interface CustomCardProps {
 	customQuery: Products[];
 }
 
-const dbconfig = localStorage.getItem("dbConfig");
-
 export function CustomTable({ customQuery }: CustomCardProps) {
+	const [flag, setFlag] = useState(false);
+
 	if (!customQuery || !Array.isArray(customQuery)) {
 		return <div>No data available</div>;
 	}
+
+	useEffect(() => {
+		const storedConfig = localStorage.getItem("dbConfig");
+		if (storedConfig) {
+			setFlag(true);
+		}
+	});
 
 	return (
 		<>
 			<Card className="w-[90%] md:w-[70%]">
 				<CardHeader>
 					<CardTitle className="flex items-center gap-x-3">
-						<Database /> {dbconfig ? "This is your DB" : "Custom Table"}
+						<Database /> {flag ? "This is your DB" : "Custom Table"}
 					</CardTitle>
 					<CardDescription>
-						Your requested products will appear bellow.
+						{flag
+							? " This is your available products"
+							: " Your requested products will appear bellow."}
 					</CardDescription>
 				</CardHeader>
 				<CardContent>

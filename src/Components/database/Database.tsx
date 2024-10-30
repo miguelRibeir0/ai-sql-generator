@@ -7,6 +7,7 @@ import {
 	customQueryFetch,
 	customDbFetch,
 	DBSettingProps,
+	customDBQuery,
 } from "./dbfetch";
 import { LoadingDB } from "./Loading";
 import { LoadingDB2 } from "./LoadingCustom";
@@ -31,26 +32,43 @@ export function DatabaseLanding() {
 	});
 	const [query, setQuery] = useState("");
 
+	// Kitchen Data
 	const { data: kitchen, isLoading: isKitchenLoading } = useQuery({
 		queryKey: ["kitchen"],
 		queryFn: kitchenFetch,
 	});
-
+	// Rooms Data
 	const { data: rooms, isLoading: isRoomsLoading } = useQuery({
 		queryKey: ["rooms"],
 		queryFn: roomFetch,
 	});
-
+	// Custom Db Data
+	const { data: customDB, isLoading: isCustomDBLoading } = useQuery({
+		queryKey: ["customDB", dbConfig],
+		queryFn: ({ queryKey }) => customDbFetch(queryKey[1] as DBSettingProps),
+		enabled: customFlag,
+	});
+	// Local Query
 	const { data: custom, isLoading: isCustomLoading } = useQuery({
 		queryKey: ["custom", query],
 		queryFn: ({ queryKey }) => customQueryFetch(queryKey[1]),
 		enabled: flag,
 	});
-
-	const { data: customDB, isLoading: isCustomDBLoading } = useQuery({
-		queryKey: ["customDB", dbConfig],
-		queryFn: ({ queryKey }) => customDbFetch(queryKey[1] as DBSettingProps),
-		enabled: customFlag,
+	// Custom Db Query
+	const { data: customDbQuery, isLoading: iscustomDbQueryLoading } = useQuery({
+		queryKey: ["customDbQuery", query, dbConfig],
+		queryFn: ({ queryKey }) => {
+			const [_, query, dbConfig] = queryKey as [string, string, DBSettingProps];
+			return customDBQuery({
+				query,
+				user: dbConfig.user,
+				host: dbConfig.host,
+				database: dbConfig.database,
+				password: dbConfig.password,
+				port: dbConfig.port,
+			});
+		},
+		enabled: flag && customFlag,
 	});
 
 	// Checking if there is a stored config
@@ -76,7 +94,13 @@ export function DatabaseLanding() {
 	);
 
 	const customTable = useMemo(
-		() => <CustomTable customQuery={customFlag ? customDB : custom} />,
+		() => (
+			<CustomTable
+				customQuery={
+					customFlag && flag ? customDbQuery : customFlag ? customDB : custom
+				}
+			/>
+		),
 		[custom, customDB, customFlag],
 	);
 	const kitchenStockCard = useMemo(
@@ -91,7 +115,7 @@ export function DatabaseLanding() {
 	if (isKitchenLoading || isRoomsLoading) {
 		return <LoadingDB />;
 	}
-	if (isCustomLoading || isCustomDBLoading) {
+	if (isCustomLoading || isCustomDBLoading || iscustomDbQueryLoading) {
 		return <LoadingDB2 />;
 	}
 

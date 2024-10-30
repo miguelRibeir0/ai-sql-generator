@@ -85,3 +85,46 @@ export const customDbFetch = async ({
 
 	return data;
 };
+
+interface CustomDBQueryProps {
+	query: string;
+	user: string;
+	host: string;
+	database: string;
+	password: string;
+	port: string;
+}
+
+export const customDBQuery = async ({
+	query,
+	user,
+	host,
+	database,
+	password,
+	port,
+}: CustomDBQueryProps) => {
+	const queryParams = new URLSearchParams({
+		query,
+		user,
+		host,
+		database,
+		password,
+		port: port.toString(),
+	});
+
+	try {
+		const ans = await fetch(
+			`${server}/ai-sql-gen/custom-db/query?${queryParams.toString()}`,
+			{
+				method: "GET",
+				headers: {
+					"content-type": "application/json",
+				},
+			},
+		);
+		const data = await ans.json();
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
+};
