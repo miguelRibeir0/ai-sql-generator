@@ -4,9 +4,15 @@ interface requestProps {
 	prompt: string;
 	model: string;
 	custom: boolean;
+	tableName?: string;
 }
 
-export const groqRequest = async ({ prompt, model, custom }: requestProps) => {
+export const groqRequest = async ({
+	prompt,
+	model,
+	custom,
+	tableName,
+}: requestProps) => {
 	const ans = await fetch(`${server}/ai-sql-gen/completion`, {
 		method: "POST",
 		headers: {
@@ -16,6 +22,7 @@ export const groqRequest = async ({ prompt, model, custom }: requestProps) => {
 			prompt,
 			model,
 			custom,
+			tableName,
 		}),
 	});
 	const data = await ans.json();

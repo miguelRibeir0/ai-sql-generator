@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Output from "./Output";
 import Loading from "./Loading";
@@ -21,16 +21,27 @@ import {
 
 export default function SqlGenerator() {
 	const [prompt, setPrompt] = useState("");
+	// To toggle between the loading and query output
 	const [state, setState] = useState(false);
 	const [sql, setSql] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+	// Checking if a db is connected
+	const [custom, setCustom] = useState(false);
+	const [tableName, setTableName] = useState("");
 
 	const model = localStorage.getItem("modelSelected") || "llama3-8b-8192";
 	const dbconfig = localStorage.getItem("dbConfig");
 
-	const custom = false; // Testing
+	interface DBConfig {
+		user: string;
+		host: string;
+		database: string;
+		password: string;
+		port: string;
+		table: string;
+	}
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -44,8 +55,15 @@ export default function SqlGenerator() {
 		setIsLoading(true);
 		setState(true);
 
+		console.log(custom, tableName);
+
 		try {
-			const response = await groqRequest({ prompt, model, custom });
+			const response = await groqRequest({
+				prompt,
+				model,
+				custom,
+				tableName,
+			});
 			setSql(response.completion);
 		} catch (error) {
 			console.error("Error fetching SQL:", error);
@@ -57,6 +75,14 @@ export default function SqlGenerator() {
 	const handleTooltipToggle = () => {
 		setIsTooltipVisible(!isTooltipVisible);
 	};
+
+	useEffect(() => {
+		if (dbconfig) {
+			setCustom(true);
+			const config: DBConfig = JSON.parse(dbconfig);
+			setTableName(config.table);
+		}
+	}, []);
 
 	return (
 		<div className="flex">
