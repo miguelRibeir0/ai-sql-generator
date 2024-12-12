@@ -44,7 +44,8 @@ export default function Models() {
 						handleModel={handleModel}
 					/>
 				</div>
-				<div className="lg:w-[20%] w-[80%] mt-10 lg:gap-y-0 flex items-center justify-center">
+				{/* Model Deprecated */}
+				{/* <div className="lg:w-[20%] w-[80%] mt-10 lg:gap-y-0 flex items-center justify-center">
 					<ModelCard
 						model="gemma-7b-it"
 						developer="Google"
@@ -52,7 +53,7 @@ export default function Models() {
 						selectedModel={selectedModel}
 						handleModel={handleModel}
 					/>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);
